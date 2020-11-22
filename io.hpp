@@ -2,7 +2,7 @@
 #define GIFTIALAB_UTIL_IO_HPP
 
 #include "scope_guard.hpp"
-#include "log_util.hpp"
+//#include "log.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -21,7 +21,7 @@ namespace util {
 void for_each_file(const char *dir, std::function<bool(std::wifstream &)> func) {
 	DIR *p_dir = opendir(dir);
 	if (!p_dir) {
-		LOG(ERROR) << "open dir[" << dir << "] failed with err[" << errno << "," << strerror(errno) << "]";
+		//LOG(ERROR) << "open dir[" << dir << "] failed with err[" << errno << "," << strerror(errno) << "]";
 		return;
 	}
 	util::ScopeGuard sg([&](){
@@ -35,10 +35,10 @@ void for_each_file(const char *dir, std::function<bool(std::wifstream &)> func) 
 		if (p_dirent->d_type == DT_REG) {
 			int ret = snprintf(file_path, sizeof(file_path) - 1, "%s/%s", dir, p_dirent->d_name);
 	       		if (ret >= sizeof(file_path) || ret == -1) {
-				LOG(ERROR) << "cannot format file path of dir[" << dir << "] and name[" << p_dirent->d_name << "]";
+				//LOG(ERROR) << "cannot format file path of dir[" << dir << "] and name[" << p_dirent->d_name << "]";
 				continue;
 			}
-			LOG(INFO) << "read file[" << file_path << "]";
+			//LOG(INFO) << "read file[" << file_path << "]";
 			std::wifstream in(file_path);
 			in.imbue(std::locale("C.utf8"));
 			if (func(in)) {

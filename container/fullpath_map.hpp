@@ -19,7 +19,6 @@ public:
 	void push_back(const _tKey &key_beg, const _tKey &key_end, const _tElement &element) {
 		(*this)[key_beg].push_back(key_end, element);
 	}
-	//_tValue::_tValue *seek_path(const _tKey &key_beg, const _tKey &key_end) {
 	_tPaths *seek_path(const _tKey &key_beg, const _tKey &key_end) {
 		auto &&it = _tSuper::find(key_beg);
 		if (it != _tSuper::end()) {

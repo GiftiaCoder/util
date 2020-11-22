@@ -18,13 +18,13 @@
 namespace giftialab {
 namespace util {
 
-void for_each_file(const char *dir, std::function<bool(std::wifstream &)> func) {
+void for_each_file(const char *dir, std::function<void(const char *, std::wifstream &)> func) {
 	DIR *p_dir = opendir(dir);
 	if (!p_dir) {
 		//LOG(ERROR) << "open dir[" << dir << "] failed with err[" << errno << "," << strerror(errno) << "]";
 		return;
 	}
-	util::ScopeGuard sg([&](){
+	util::scope_guard sg([&](){
 		closedir(p_dir);
 	});
 	struct dirent *p_dirent = nullptr;
@@ -41,10 +41,7 @@ void for_each_file(const char *dir, std::function<bool(std::wifstream &)> func) 
 			//LOG(INFO) << "read file[" << file_path << "]";
 			std::wifstream in(file_path);
 			in.imbue(std::locale("C.utf8"));
-			if (func(in)) {
-				continue;
-			}
-			break;
+			func(file_path, in);
 		}
 	}
 }
